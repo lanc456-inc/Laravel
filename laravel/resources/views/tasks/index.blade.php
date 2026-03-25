@@ -9,6 +9,13 @@
 <body>
     <div class="container mt-5">
         <h1>Tasks</h1>
+
+        @if(session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <a href="{{ route('tasks.create') }}" class="btn btn-primary mb-3">Create New Task</a>
         <table class="table">
             <thead>

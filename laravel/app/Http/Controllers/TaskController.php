@@ -20,8 +20,17 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        Task::create($request->all());
-        return redirect()->route('tasks.index');
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'is_completed' => 'sometimes|boolean',
+        ]);
+
+        $validated['is_completed'] = $request->boolean('is_completed');
+
+        Task::create($validated);
+
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
 
     public function show(Task $task)
@@ -36,8 +45,17 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        $task->update($request->all());
-        return redirect()->route('tasks.index');
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'is_completed' => 'sometimes|boolean',
+        ]);
+
+        $validated['is_completed'] = $request->boolean('is_completed');
+
+        $task->update($validated);
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
 
     public function destroy(Task $task)
